@@ -30,7 +30,7 @@ class ODLClient(object):
         response = requests.get(url, params=params, auth=self.auth)
         return response.json()
 
-    def get_node_from_inventory(self, node_id, **params):
+    def get_node(self, node_id, **params):
         path = "/operational/opendaylight-inventory:nodes"
         url = '{}{}'.format(self.endpoint, path)
         response = requests.get(url, params=params, auth=self.auth)
