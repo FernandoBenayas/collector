@@ -30,6 +30,7 @@ def Main():
     conn.setblocking(False)
     print("Connection from: " + str(addr))
     actual_action = None
+    actual_simulation = None
     collector = esCollector(
         hosts='{}:{}'.format(ELASTICSEARCH, ES_PORT),
         odl_endpoint='http://{}:{}'.format(ODL_HOST, ODL_PORT))
