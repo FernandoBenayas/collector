@@ -50,8 +50,12 @@ def Main():
 
             if data:
                 if data['message'] == 'START':
-                    if data['simulation_id']:
+                    if data['simulation_id'] | data['simulation_id'] == 0:
                         actual_simulation = data['simulation_id']
+                    else:
+                        conn.send(
+                            "PLEASE PROVIDE A SIMULATION ID".encode())
+                        logger.info("PLEASE PROVIDE A SIMULATION ID")
                     sim = collector.add_simulation(
                         simulation_id=data['simulation_id'],
                         start_date=datetime.now())
