@@ -10,7 +10,6 @@ class ODLClient(object):
         self.endpoint = '{}{}'.format(endpoint, '/restconf')
         self.credentials = credentials
         self.auth = (credentials[0], credentials[1])
-        self.inventory = self.get_inventory()
 
     def request(self, path=None, method='GET', **params):
         url = '{}{}'.format(self.endpoint, path)

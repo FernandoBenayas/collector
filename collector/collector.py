@@ -25,11 +25,16 @@ class esCollector(Elasticsearch):
     def add_simulation(self, simulation_id, start_date=None):
         if self._validate_index(simulation_id):
             data = {
-                'network-topology': self.odl.get_networkTopology(),
-                'inventory': self.odl.get_inventory(),
-                'timestamp': datetime.now(),
-                'start_date': start_date
+                'network-topology':
+                self.odl.get_networkTopology()['network-topology']['topology'][0],
+                'timestamp':
+                datetime.now(),
+                'start_date':
+                start_date,
+                'inventory':
+                self.odl.get_inventory()['nodes']['node']
             }
+
             resp = self.index(
                 index="simulation{}".format(simulation_id),
                 doc_type='sim_instance_start',
@@ -42,10 +47,10 @@ class esCollector(Elasticsearch):
     def add_action(self, simulation_id, action_name=None, action_id=None):
 
         data = {
-            'inventory': self.odl.get_inventory(),
             'timestamp': datetime.now(),
             'action_name': action_name,
-            'action_id': action_id
+            'action_id': action_id,
+            'inventory': self.odl.get_inventory()['nodes']['node']
         }
 
         resp = self.index(
@@ -58,10 +63,11 @@ class esCollector(Elasticsearch):
     def add_simulationFinish(self, simulation_id, end_date=None):
 
         data = {
-            'inventory': self.odl.get_inventory(),
-            'timestamp': datetime.now(),
-            'end_date': end_date
+            'timestamp': datetime.now(), 
+            'end_date': end_date,
+            'inventory': self.odl.get_inventory()['nodes']['node']
         }
+
         resp = self.index(
             index="simulation{}".format(simulation_id),
             doc_type='sim_instance_end',

@@ -50,11 +50,10 @@ def Main():
 
             if data:
                 if data['message'] == 'START':
-                    if data['simulation_id'] | data['simulation_id'] == 0:
+                    if 'simulation_id' in data:
                         actual_simulation = data['simulation_id']
                     else:
-                        conn.send(
-                            "PLEASE PROVIDE A SIMULATION ID".encode())
+                        conn.send("PLEASE PROVIDE A SIMULATION ID".encode())
                         logger.info("PLEASE PROVIDE A SIMULATION ID")
                     sim = collector.add_simulation(
                         simulation_id=data['simulation_id'],
@@ -79,7 +78,8 @@ def Main():
                         conn.send("SIMULATION MINING FINISHED".encode())
                         collector = esCollector(
                             hosts='{}:{}'.format(ELASTICSEARCH, ES_PORT),
-                            odl_endpoint='http://{}:{}'.format(ODL_HOST, ODL_PORT))
+                            odl_endpoint='http://{}:{}'.format(ODL_HOST,
+                                                               ODL_PORT))
                         actual_action = None
                     else:
                         conn.send(
