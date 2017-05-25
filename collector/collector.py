@@ -1,9 +1,10 @@
 from collector.odlclient import ODLClient
 from elasticsearch import Elasticsearch
+from elasticsearch import helpers
+
 from datetime import datetime
 import requests
 import json
-
 
 class esCollector(Elasticsearch):
     def __init__(self, hosts, odl_endpoint='http://localhost:8181'):
@@ -21,56 +22,75 @@ class esCollector(Elasticsearch):
             return False
         elif r.status_code == 404:
             return True
-
-    def add_simulation(self, simulation_id, start_date=None):
-        if self._validate_index(simulation_id):
-            data = {
-                'network-topology':
-                self.odl.get_networkTopology()['network-topology']['topology'][0],
-                'timestamp':
-                datetime.now(),
-                'start_date':
-                start_date,
-                'inventory':
-                self.odl.get_inventory()['nodes']['node']
-            }
-
-            resp = self.index(
+    
+    def _add_instance(self, data, simulation_id, doc_type):
+        resp = self.index(
                 index="simulation{}".format(simulation_id),
-                doc_type='sim_instance_start',
+                doc_type=doc_type,
                 id=self.count_id,
                 body=data)
-            self.count_id += 1
+        self.count_id += 1
+    
+    def _add_instance_bulk(self, data):
+        resp = helpers.bulk(self, actions=data)
+    
+    def add_simulation(self, simulation_id, start_date=None):
+        if self._validate_index(simulation_id):
+            data = self.odl.get_networkTopology()['network-topology']['topology'][0]
+            data['timestamp'] = datetime.now()
+            data['start_date'] = start_date
+            self._add_instance(data, simulation_id, 'start_topology')
+            switches = []
+            for node in self.odl.get_inventory()['nodes']['node']:
+                data = self.odl.get_node(node['id'])['node'][0]
+                data['timestamp'] = datetime.now()
+                data['start_date'] = start_date
+                esdata = {
+                    '_index':"simulation{}".format(simulation_id),
+                    '_id': self.count_id,
+                    '_type': 'start_{}'.format(node['id']),
+                    '_source': data
+                }
+                self.count_id += 1
+                switches.append(esdata)
+            self._add_instance_bulk(switches)
         else:
             return False
 
     def add_action(self, simulation_id, action_name=None, action_id=None):
 
-        data = {
-            'timestamp': datetime.now(),
-            'action_name': action_name,
-            'action_id': action_id,
-            'inventory': self.odl.get_inventory()['nodes']['node']
-        }
-
-        resp = self.index(
-            index="simulation{}".format(simulation_id),
-            doc_type='sim_instance_action',
-            id=self.count_id,
-            body=data)
-        self.count_id += 1
+        switches = []
+        for node in self.odl.get_inventory()['nodes']['node']:
+            data = self.odl.get_node(node['id'])['node'][0]
+            data['timestamp'] = datetime.now()
+            data['start_date'] = start_date
+            data['action_name'] = action_name
+            data['action_id'] = action_id
+            esdata = {
+                '_index':"simulation{}".format(simulation_id),
+                '_id': self.count_id,
+                '_type': 'action_{}_{}'.format(action_name, node['id']),
+                '_source': data
+            }
+            self.count_id += 1
+            switches.append(esdata)
+        
+        self._add_instance_bulk(switches)
 
     def add_simulationFinish(self, simulation_id, end_date=None):
 
-        data = {
-            'timestamp': datetime.now(), 
-            'end_date': end_date,
-            'inventory': self.odl.get_inventory()['nodes']['node']
-        }
-
-        resp = self.index(
-            index="simulation{}".format(simulation_id),
-            doc_type='sim_instance_end',
-            id=self.count_id,
-            body=data)
-        self.count_id += 1
+        switches = []
+        for node in self.odl.get_inventory()['nodes']['node']:
+            data = self.odl.get_node(node['id'])['node'][0]
+            data['timestamp'] = datetime.now()
+            data['end_date'] = end_date
+            esdata = {
+                '_index':"simulation{}".format(simulation_id),
+                '_id': self.count_id,
+                '_type': 'end_{}'.format(node['id']),
+                '_source': data
+            }
+            self.count_id += 1
+            switches.append(esdata)
+        
+        self._add_instance_bulk(switches)

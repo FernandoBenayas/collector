@@ -30,14 +30,11 @@ class ODLClient(object):
         return response.json()
 
     def get_node(self, node_id, **params):
-        path = "/operational/opendaylight-inventory:nodes"
+        path = "/operational/opendaylight-inventory:nodes/node/{}"
         url = '{}{}'.format(self.endpoint, path)
-        response = requests.get(url, params=params, auth=self.auth)
         try:
-            return [
-                node for node in self.inventory["nodes"]["node"]
-                if node["id"] == node_id
-            ][0]
+            response = requests.get(url.format(node_id), params=params, auth=self.auth)
+            return response.json()
         except IndexError:
             print(" {} is not a valid node_id".format(node_id))
 
