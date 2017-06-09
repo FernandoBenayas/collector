@@ -14,7 +14,7 @@ class esCollector(Elasticsearch):
         self.host = hosts.split(':')[0]
         self.port = hosts.split(':')[1]
 
-    def _validate_index(self, simulation_id):
+    def validate_index(self, simulation_id):
         url = 'http://{}:{}/simulation{}'.format(self.host, self.port,
                                                  str(simulation_id))
         r = requests.get(url)
@@ -35,7 +35,7 @@ class esCollector(Elasticsearch):
         resp = helpers.bulk(self, actions=data)
     
     def add_data(self, simulation_id):
-        if self._validate_index(simulation_id):
+        if self.validate_index(simulation_id):
             data = self.odl.get_networkTopology()['network-topology']['topology'][0]
             data['timestamp'] = datetime.now()
             self._add_instance(data, simulation_id, 'topology')
