@@ -27,9 +27,9 @@ def start(pidfile, simulation_id, timesleep):
     collector = esCollector(
         hosts='{}:{}'.format(ELASTICSEARCH, ES_PORT),
         odl_endpoint='http://{}:{}'.format(ODL_HOST, ODL_PORT))
-    if not collector.validate_index(simulation_id):
-        logging.info("This simulation already exists")
-        sys.exit()
+    #if not collector.validate_index(simulation_id):
+    #   logging.info("This simulation already exists")
+    #   sys.exit()
     pid = str(os.getpid())
     if os.path.isfile(pidfile):
         logging.info("Collector module is running in background")
@@ -97,12 +97,15 @@ def Main():
     console.setFormatter(formatter)
     logging.getLogger('').addHandler(console)
 
-    pidfile = os.path.abspath(PID_FILE)
+    pidfile = "/tmp/{}".format(PID_FILE)
 
     if args.cmd == 'start':
         try:
             start(pidfile, args.simulation_id, args.time)
-        except:
+        except KeyboardInterrupt:
+            stop(pidfile)
+        except KeyError:
+            logging.info("There is no ODL data")
             stop(pidfile)
     elif args.cmd == 'stop':
         stop(pidfile)

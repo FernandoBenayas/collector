@@ -33,10 +33,10 @@ services:
     depends_on:
      - elasticsearch
      - opendaylight
-    tty: true
-    privileged: true
     environment:
      - ELASTICSEARCH=elasticsearch
      - ODL_HOST=opendaylight
+    volumes:
+     - .:/usr/src/app/
     ports:
-     - "4000:4000"
+     - "5044:5044"

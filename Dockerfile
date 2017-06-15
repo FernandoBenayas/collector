@@ -7,5 +7,5 @@ ADD . /usr/src/app
 WORKDIR /usr/src/app
 RUN pip3 install -r requirements.txt
 RUN python3 /usr/src/app/setup.py install
-RUN logstash-plugin install logstash-output-elasticsearch logstash-output-exec logstash-input-beats 
+RUN logstash-plugin install logstash-output-elasticsearch logstash-input-beats 
 CMD ["logstash",  "-f", "logstash-collector.conf"]

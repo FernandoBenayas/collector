@@ -39,14 +39,14 @@ class esCollector(Elasticsearch):
         if self.validate_index(simulation_id):
             data = self.odl.get_networkTopology()['network-topology'][
                 'topology'][0]
-            data['timestamp'] = datetime.now()
+            data['@timestamp'] = datetime.now()
             self._add_instance(data, simulation_id, 'topology')
 
         else:
             switches = []
             for node in self.odl.get_inventory()['nodes']['node']:
                 data = self.odl.get_node(node['id'])['node'][0]
-                data['timestamp'] = datetime.now()
+                data['@timestamp'] = datetime.now()
                 esdata = {
                     '_index': "simulation{}".format(simulation_id),
                     '_id': self.count_id,
