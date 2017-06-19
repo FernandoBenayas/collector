@@ -47,10 +47,12 @@ class esCollector(Elasticsearch):
             for node in self.odl.get_inventory()['nodes']['node']:
                 data = self.odl.get_node(node['id'])['node'][0]
                 data['@timestamp'] = datetime.now()
+                switch_id = node['id'].split(':')
+                data['id'] = "".join([switch_id[0], switch_id[1]])
                 esdata = {
                     '_index': "simulation{}".format(simulation_id),
                     '_id': self.count_id,
-                    '_type': '{}'.format(node['id']),
+                    '_type': 'node',
                     '_source': data
                 }
                 self.count_id += 1
