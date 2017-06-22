@@ -19,7 +19,7 @@ install_reqs = [str(ir.req) for ir in install_reqs]
 setup(
     name='collector',
     packages=['collector'],  # this must be the same as the name above
-    version=1.2,
+    version=1.3,
     description=('An SDN Collector '),
     author='Manuel García-Amado',
     author_email='militarpancho@gmail.com',

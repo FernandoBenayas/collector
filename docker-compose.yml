@@ -14,7 +14,7 @@ services:
      - "9200:9200"
      - "9300:9300"
   mininet:
-    image: gsiupm/mininet
+    image: fernandobenayas/mininet
     container_name: mininet
     depends_on:
      - opendaylight
@@ -23,9 +23,11 @@ services:
     environment:
      - DISPLAY
      - XTERM
+     - COLLECTOR=collector
     volumes:
      - /tmp/.X11-unix:/tmp/.X11-unix
      - /lib/modules:/lib/modules
+     - ./log:/root/log
      - /home/mgarcia/sdn/sdn-odl-docker:/scripts
   collector:
     image: collector
