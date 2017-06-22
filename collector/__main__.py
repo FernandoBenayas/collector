@@ -74,7 +74,7 @@ def Main():
         help='Time each OpenDayLight requests')
 
     parser.add_argument(
-        '--simulation_id', '-s', type=int, required=True, help='Simulation ID')
+        '--simulation_id', '-s', type=str, required=True, help='Simulation ID')
 
     parser.add_argument(
         '--level',
