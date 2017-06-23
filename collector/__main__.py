@@ -54,7 +54,7 @@ def stop(pidfile):
         logging.info("collector stopped")
         sys.exit()
     else:
-        logging.info("Collector modules is not running")
+        logging.info("Collector module is not running")
         sys.exit()
 
 
