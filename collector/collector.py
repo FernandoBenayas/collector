@@ -36,25 +36,23 @@ class esCollector(Elasticsearch):
         resp = helpers.bulk(self, actions=data)
 
     def add_data(self, simulation_id):
-        if self.validate_index(simulation_id):
-            data = self.odl.get_networkTopology()['network-topology'][
-                'topology'][0]
-            data['@timestamp'] = datetime.now()
-            self._add_instance(data, simulation_id, 'topology')
+        data = self.odl.get_networkTopology()['network-topology'][
+            'topology'][0]
+        data['@timestamp'] = datetime.now()
+        self._add_instance(data, simulation_id, 'topology')
 
-        else:
-            switches = []
-            for node in self.odl.get_inventory()['nodes']['node']:
-                data = self.odl.get_node(node['id'])['node'][0]
-                data['@timestamp'] = datetime.now()
-                switch_id = node['id'].split(':')
-                data['id'] = "".join([switch_id[0], switch_id[1]])
-                esdata = {
-                    '_index': "simulation{}".format(simulation_id),
-                    '_id': self.count_id,
-                    '_type': 'node',
-                    '_source': data
-                }
-                self.count_id += 1
-                switches.append(esdata)
-            self._add_instance_bulk(switches)
+        switches = []
+        for node in self.odl.get_inventory()['nodes']['node']:
+            data = self.odl.get_node(node['id'])['node'][0]
+            data['@timestamp'] = datetime.now()
+            switch_id = node['id'].split(':')
+            data['id'] = "".join([switch_id[0], switch_id[1]])
+            esdata = {
+                '_index': "simulation{}".format(simulation_id),
+                '_id': self.count_id,
+                '_type': 'node',
+                '_source': data
+            }
+            self.count_id += 1
+            switches.append(esdata)
+        self._add_instance_bulk(switches)
