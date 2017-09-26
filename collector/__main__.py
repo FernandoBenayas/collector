@@ -37,6 +37,9 @@ def start(pidfile, simulation_id, timesleep):
     with open(pidfile, 'w+') as f:
         f.write(pid)
     logging.info("Collector started")
+    exec()
+    
+def exec():
     while True:
         collector.add_data(simulation_id)
         time.sleep(timesleep)
@@ -57,6 +60,12 @@ def stop(pidfile):
         logging.info("Collector module is not running")
         sys.exit()
 
+def wait():
+    time.sleep(int(args.time))
+    try:
+        exec()
+    except KeyError:
+        wait()
 
 def Main():
     parser = argparse.ArgumentParser(description='SDN Collector')
@@ -106,7 +115,7 @@ def Main():
             stop(pidfile)
         except KeyError:
             logging.info("There is no ODL data")
-            time.sleep(int(args.time))
+            wait()
     elif args.cmd == 'stop':
         stop(pidfile)
 
