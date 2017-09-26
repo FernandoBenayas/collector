@@ -106,7 +106,7 @@ def Main():
             stop(pidfile)
         except KeyError:
             logging.info("There is no ODL data")
-            stop(pidfile)
+            time.sleep(int(args.time))
     elif args.cmd == 'stop':
         stop(pidfile)
 
