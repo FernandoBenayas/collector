@@ -61,10 +61,10 @@ def stop(pidfile):
         sys.exit()
 
 def wait():
-    time.sleep(int(args.time))
+    time.sleep(120)
     try:
         exec()
-    except KeyError:
+    except:
         wait()
 
 def Main():
