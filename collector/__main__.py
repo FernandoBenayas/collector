@@ -23,23 +23,21 @@ ODL_PORT = "8181"
 PID_FILE = 'collector.pid'
 
 
-def start(pidfile, simulation_id, timesleep):
+def start(pidfile=None, simulation_id, timesleep):
     collector = esCollector(
         hosts='{}:{}'.format(ELASTICSEARCH, ES_PORT),
         odl_endpoint='http://{}:{}'.format(ODL_HOST, ODL_PORT))
     #if not collector.validate_index(simulation_id):
     #   logging.info("This simulation already exists")
     #   sys.exit()
-    pid = str(os.getpid())
-    if os.path.isfile(pidfile):
-        logging.info("Collector module is running in background")
-        sys.exit()
-    with open(pidfile, 'w+') as f:
-        f.write(pid)
-    logging.info("Collector started")
-    exec()
-    
-def exec():
+    if pidfile
+        pid = str(os.getpid())
+        if os.path.isfile(pidfile):
+            logging.info("Collector module is running in background")
+            sys.exit()
+        with open(pidfile, 'w+') as f:
+            f.write(pid)
+        logging.info("Collector started")
     while True:
         collector.add_data(simulation_id)
         time.sleep(timesleep)
@@ -62,8 +60,10 @@ def stop(pidfile):
 
 def wait():
     time.sleep(120)
-    try:
-        exec()
+    logging.info("Waiting for Opendaylight response")
+    try KeyError:
+        start(simulation_id=args.simulation_id, timesleep=args.time)
+        logging.info("Collector restarted")
     except:
         wait()
 
