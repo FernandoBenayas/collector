@@ -64,7 +64,7 @@ def wait():
     try:
         start(simulation_id=args.simulation_id, timesleep=args.time)
         logging.info("Collector restarted")
-    except KeyError:
+    except:
         wait()
 
 def Main():
@@ -113,8 +113,8 @@ def Main():
             start(args.simulation_id, args.time, pidfile)
         except KeyboardInterrupt:
             stop(pidfile)
-        except KeyError:
-            logging.info("There is no ODL data")
+        except:
+            logging.info("No Response from ODL")
             wait()
     elif args.cmd == 'stop':
         stop(pidfile)
