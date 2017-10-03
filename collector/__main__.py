@@ -58,14 +58,15 @@ def stop(pidfile):
         logging.info("Collector module is not running")
         sys.exit()
 
-def wait():
-    time.sleep(120)
+def wait(sim_id, time):
+    time.sleep(3*time)
     logging.info("Waiting for Opendaylight response")
     try:
-        start(simulation_id=args.simulation_id, timesleep=args.time)
+        start(simulation_id=sim_id, timesleep=time)
         logging.info("Collector restarted")
-    except:
-        wait()
+    except Exception as err:
+        logging.info(str(err))
+        wait(sim_id, time)
 
 def Main():
     parser = argparse.ArgumentParser(description='SDN Collector')
@@ -115,7 +116,7 @@ def Main():
             stop(pidfile)
         except:
             logging.info("No Response from ODL")
-            wait()
+            wait(args.simulation_id, args.time)
     elif args.cmd == 'stop':
         stop(pidfile)
 
