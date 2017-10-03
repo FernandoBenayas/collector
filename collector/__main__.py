@@ -58,15 +58,15 @@ def stop(pidfile):
         logging.info("Collector module is not running")
         sys.exit()
 
-def wait(sim_id, time):
-    time.sleep(3*time)
+def wait(sim_id, sleep_time):
+    time.sleep(int(3*sleep_time))
     logging.info("Waiting for Opendaylight response")
     try:
-        start(simulation_id=sim_id, timesleep=time)
+        start(simulation_id=sim_id, timesleep=sleep_time)
         logging.info("Collector restarted")
     except Exception as err:
         logging.info(str(err))
-        wait(sim_id, time)
+        wait(sim_id, sleep_time)
 
 def Main():
     parser = argparse.ArgumentParser(description='SDN Collector')
