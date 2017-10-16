@@ -39,7 +39,7 @@ def start(simulation_id, timesleep, pidfile=None):
             f.write(pid)
         logging.info("Collector started")
     while True:
-        collector.add_data(simulation_id)
+        collector.add_data(simulation_id,timesleep=timesleep)
         time.sleep(timesleep)
 
 
