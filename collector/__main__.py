@@ -40,7 +40,7 @@ def start(simulation_id, timesleep, pidfile=None):
         logging.info("Collector started")
     while True:
         collector.add_data(simulation_id,timesleep=timesleep)
-        time.sleep(timesleep)
+        time.sleep(timesleep/3)
 
 
 def stop(pidfile):
@@ -59,7 +59,7 @@ def stop(pidfile):
         sys.exit()
 
 def wait(sim_id, sleep_time):
-    time.sleep(int(3*sleep_time))
+    time.sleep(int(2*sleep_time))
     logging.info("Waiting for Opendaylight response")
     try:
         start(simulation_id=sim_id, timesleep=sleep_time)

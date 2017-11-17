@@ -41,7 +41,7 @@ class esCollector(Elasticsearch):
         doc_pass.write('YELLOW \n')
         doc_pass.close()
 
-        time.sleep(timesleep/2)
+        time.sleep(timesleep*2/3)
 
         doc_pass = open('/usr/src/app/pass/permission', 'w')
         doc_pass.write('RED \n')
