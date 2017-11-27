@@ -3,6 +3,7 @@ from elasticsearch import Elasticsearch
 from elasticsearch import helpers
 
 from datetime import datetime
+import time
 import requests
 import json
 
@@ -35,7 +36,17 @@ class esCollector(Elasticsearch):
     def _add_instance_bulk(self, data):
         resp = helpers.bulk(self, actions=data)
 
-    def add_data(self, simulation_id):
+    def add_data(self, simulation_id, timesleep):
+        doc_pass = open('/usr/src/app/pass/permission', 'w')
+        doc_pass.write('YELLOW \n')
+        doc_pass.close()
+
+        time.sleep(timesleep*2/3)
+
+        doc_pass = open('/usr/src/app/pass/permission', 'w')
+        doc_pass.write('RED \n')
+        doc_pass.close()        
+
         data = self.odl.get_networkTopology()['network-topology'][
             'topology'][0]
         data['@timestamp'] = datetime.now()
@@ -56,3 +67,8 @@ class esCollector(Elasticsearch):
             self.count_id += 1
             switches.append(esdata)
         self._add_instance_bulk(switches)
+
+        doc_pass = open('/usr/src/app/pass/permission', 'w')
+        doc_pass.write('GREEN \n')
+        doc_pass.close()
+
