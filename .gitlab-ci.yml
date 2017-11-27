@@ -1,20 +1,9 @@
 stages:
-  - test
   - push
   - clean
 
 before_script:
   - make -e login
-
-.test: &test_definition
-  stage: test
-  script:
-    - make -e test-$PYTHON_VERSION
-
-test-3.5:
-  <<: *test_definition
-  variables:
-    PYTHON_VERSION: "3.5"
 
 .image: &image_definition
   stage: push
@@ -23,11 +12,6 @@ test-3.5:
   only:
     - tags
     - triggers
-
-push-3.5:
-  <<: *image_definition
-  variables:
-    PYTHON_VERSION: "3.5"
 
 push-latest:
   <<: *image_definition
