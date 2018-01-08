@@ -9,12 +9,16 @@ import json
 
 
 class esCollector(Elasticsearch):
-    def __init__(self, hosts, odl_endpoint='http://localhost:8181'):
+    def __init__(self, hosts, countidfile='/tmp/countid', odl_endpoint='http://localhost:8181', countid = 0):
         super(esCollector, self).__init__(hosts=hosts)
         self.odl = ODLClient(odl_endpoint)
-        self.count_id = 0
+        self.count_id = countid
+        self.countidfile = countidfile
         self.host = hosts.split(':')[0]
         self.port = hosts.split(':')[1]
+
+        with open(self.countidfile, 'w+') as f:
+            f.write(str(self.count_id))
 
     def validate_index(self, simulation_id):
         url = 'http://{}:{}/simulation{}'.format(self.host, self.port,
@@ -33,19 +37,13 @@ class esCollector(Elasticsearch):
             body=data)
         self.count_id += 1
 
+        with open(self.countidfile, 'w+') as f:
+            f.write(str(self.count_id))
+
     def _add_instance_bulk(self, data):
         resp = helpers.bulk(self, actions=data)
 
     def add_data(self, simulation_id, timesleep):
-        doc_pass = open('/usr/src/app/pass/permission', 'w')
-        doc_pass.write('YELLOW \n')
-        doc_pass.close()
-
-        time.sleep(timesleep*2/3)
-
-        doc_pass = open('/usr/src/app/pass/permission', 'w')
-        doc_pass.write('RED \n')
-        doc_pass.close()        
 
         data = self.odl.get_networkTopology()['network-topology'][
             'topology'][0]
@@ -65,10 +63,9 @@ class esCollector(Elasticsearch):
                 '_source': data
             }
             self.count_id += 1
+            
+            with open(self.countidfile, 'w+') as f:
+                f.write(str(self.count_id))
+
             switches.append(esdata)
         self._add_instance_bulk(switches)
-
-        doc_pass = open('/usr/src/app/pass/permission', 'w')
-        doc_pass.write('GREEN \n')
-        doc_pass.close()
-
