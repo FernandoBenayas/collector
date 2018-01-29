@@ -1,0 +1,44 @@
+version: '3'
+services:
+  opendaylight:
+    image: gsiupm/opendaylight
+    container_name: opendaylight
+    ports:
+     - "6633:6633"
+     - "8181:8181"
+     - "8101:8101"
+  elasticsearch:
+    image: elasticsearch
+    container_name: elasticsearch
+    ports:
+     - "9200:9200"
+     - "9300:9300"
+  mininet:
+    image: fernandobenayas/mininet
+    container_name: mininet
+    depends_on:
+     - opendaylight
+    tty: true
+    privileged: true
+    environment:
+     - DISPLAY
+     - XTERM
+     - COLLECTOR=collector
+    volumes:
+     - /tmp/.X11-unix:/tmp/.X11-unix
+     - /lib/modules:/lib/modules
+     - ./log:/root/log
+     - /home/mgarcia/sdn/sdn-odl-docker:/scripts
+  collector:
+    image: collector
+    container_name: collector
+    depends_on:
+     - elasticsearch
+     - opendaylight
+    environment:
+     - ELASTICSEARCH=elasticsearch
+     - ODL_HOST=opendaylight
+    volumes:
+     - .:/usr/src/app/
+    ports:
+     - "5044:5044"
