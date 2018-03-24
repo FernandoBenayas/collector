@@ -64,7 +64,7 @@ def play(simulation_id, timesleep, countidfile, pidfile=None):
         hosts='{}:{}'.format(ELASTICSEARCH, ES_PORT),
         countidfile=countidfile,
         odl_endpoint='http://{}:{}'.format(ODL_HOST, ODL_PORT),
-        countid=countid)
+        countid=int(countid))
 
     return collector
 
@@ -164,7 +164,7 @@ def Main():
         except KeyboardInterrupt:
             stop(pidfile)
         except:
-            logging.info("No Response from ODL")
+            logging.info("No Response from ODL: %s", sys.exc_info()[0])
             wait(args.simulation_id, args.time, countidfile)
     elif args.cmd == 'stop':
         stop(pidfile, countidfile)
@@ -177,7 +177,7 @@ def Main():
         except KeyboardInterrupt:
             stop(pidfile)
         except:
-            logging.info("No Response from ODL")
+            logging.info("No Response from ODL: %s", sys.exc_info()[0])
             wait(args.simulation_id, args.time, countidfile)
 
 if __name__ == '__main__':
