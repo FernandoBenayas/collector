@@ -29,7 +29,8 @@ class esCollector(Elasticsearch):
         elif r.status_code == 404:
             return True
 
-    def _add_instance(self, data, simulation_id, doc_type):
+    def _add_instance(self, data, simulation_id, doc_type, logging):
+        logging.info("countid: %s", str(self.count_id))
         resp = self.index(
             index="simulation{}".format(simulation_id),
             doc_type=doc_type,
@@ -43,12 +44,12 @@ class esCollector(Elasticsearch):
     def _add_instance_bulk(self, data):
         resp = helpers.bulk(self, actions=data)
 
-    def add_data(self, simulation_id, timesleep):
+    def add_data(self, simulation_id, timesleep, logging):
 
         data = self.odl.get_networkTopology()['network-topology'][
             'topology'][0]
         data['@timestamp'] = datetime.now()
-        self._add_instance(data, simulation_id, 'topology')
+        self._add_instance(data, simulation_id, 'topology', logging)
 
         switches = []
         for node in self.odl.get_inventory()['nodes']['node']:
@@ -66,6 +67,7 @@ class esCollector(Elasticsearch):
             
             with open(self.countidfile, 'w+') as f:
                 f.write(str(self.count_id))
+            logging.info("countid: %s", str(self.count_id))
 
             switches.append(esdata)
         self._add_instance_bulk(switches)

@@ -68,9 +68,9 @@ def play(simulation_id, timesleep, countidfile, pidfile=None):
 
     return collector
 
-def collect(collector, simulation_id, timesleep):
+def collect(collector, simulation_id, timesleep, logging):
     while True:
-        collector.add_data(simulation_id,timesleep=timesleep)
+        collector.add_data(simulation_id, timesleep, logging)
         time.sleep(timesleep)
 
 def pause(pidfile, countidfile):
@@ -160,9 +160,12 @@ def Main():
     if args.cmd == 'start':
         try:
             collector = start(args.simulation_id, args.time, countidfile, pidfile)
-            collect(collector, args.simulation_id, args.time)
+            collect(collector, args.simulation_id, args.time, logging)
         except KeyboardInterrupt:
             stop(pidfile)
+        except TypeError as err:
+            logging.info("Type Error: %s", err)
+            wait(args.simulation_id, args.time, countidfile)
         except:
             logging.info("No Response from ODL: %s", sys.exc_info()[0])
             wait(args.simulation_id, args.time, countidfile)
@@ -173,9 +176,12 @@ def Main():
     elif args.cmd == 'play':
         try:
             collector = play(args.simulation_id, args.time, countidfile,  pidfile)
-            collect(collector, args.simulation_id, args.time)
+            collect(collector, args.simulation_id, args.time, logging)
         except KeyboardInterrupt:
             stop(pidfile)
+        except TypeError as err:
+            logging.info("Type Error: %s", err)
+            wait(args.simulation_id, args.time, countidfile)
         except:
             logging.info("No Response from ODL: %s", sys.exc_info()[0])
             wait(args.simulation_id, args.time, countidfile)
