@@ -1,0 +1,34 @@
+stages:
+  - push
+  - clean
+
+before_script:
+  - make -e login
+
+.image: &image_definition
+  stage: push
+  script:
+    - make -e push-$PYTHON_VERSION
+  only:
+    - tags
+    - triggers
+
+push-latest:
+  <<: *image_definition
+  variables:
+    PYTHON_VERSION: latest
+  only:
+    - tags
+    - triggers
+
+clean :
+  stage: clean
+  script:
+    - make -e clean
+  when: manual
+
+cleanup_py:
+   stage: clean
+   when: always   # this is important; run even if preceding stages failed.
+   script:
+    - docker logout

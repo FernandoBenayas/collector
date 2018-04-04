@@ -14,7 +14,7 @@ services:
      - "9200:9200"
      - "9300:9300"
   mininet:
-    image: fernandobenayas/mininet
+    image: registry.cluster.gsi.dit.upm.es/sdn/network-simulator/mininet:carbon
     container_name: mininet
     depends_on:
      - opendaylight
@@ -28,9 +28,9 @@ services:
      - /tmp/.X11-unix:/tmp/.X11-unix
      - /lib/modules:/lib/modules
      - ./log:/root/log
-     - /home/mgarcia/sdn/sdn-odl-docker:/scripts
   collector:
     image: collector
+    build: .
     container_name: collector
     depends_on:
      - elasticsearch

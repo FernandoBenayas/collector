@@ -1,0 +1,391 @@
+{
+  "@context" : {
+    "sdnl:InventoryManager" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#InventoryManager"
+    },
+    "sdnl:hardTimeout" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#hardTimeout",
+      "@type" : "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "sdnl:status" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#status",
+      "@type" : "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "sdnl:Table" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#Table"
+    },
+    "sdnl:topDataProperty" : {
+      "@id" : "http://www.w3.org/2002/07/owl#topDataProperty",
+      "@type" : "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "sdnl:hasFlowTable" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#hasFlowTable",
+      "@type" : "@id"
+    },
+    "sdnl:SwitchLearningService" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#SwitchLearningService"
+    },
+    "sdnl:activeflows" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#activeflows",
+      "@type" : "http://www.w3.org/2001/XMLSchema#int"
+    },
+    "sdnl:Group" : {
+      "@id" : "http://schemas.ogf.org/nml/2013/05/base#Group"
+    },
+    "sdnl:isFlowOf" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#isFlowOf",
+      "@type" : "@id"
+    },
+    "sdnl:StatsManager" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#StatsManager"
+    },
+    "sdnl:blocked" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#blocked",
+      "@type" : "http://www.w3.org/2001/XMLSchema#boolean"
+    },
+    "sdnl:errorsTransmitted" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#errorsTransmitted"
+    },
+    "sdnl:end" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#end"
+    },
+    "sdnl:Flow" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#Flow"
+    },
+    "sdnl:bytesTransmitted" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#bytesTransmitted",
+      "@type" : "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "sdnl:FlowTable" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#FlowTable"
+    },
+    "sdnl:duration" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#duration",
+      "@type" : "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "sdnl:outPort" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#outPort"
+    },
+    "sdnl:byteCount" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#byteCount",
+      "@type" : "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "sdnl:priority" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#priority",
+      "@type" : "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "sdnl:Port" : {
+      "@id" : "http://schemas.ogf.org/nml/2013/05/base#Port"
+    },
+    "sdnl:statTrigger" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#statTrigger"
+    },
+    "sdnl:inPort" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#inPort"
+    },
+    "sdnl:dropsReceived" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#dropsReceived",
+      "@type" : "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "sdnl:packetsReceived" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#packetsReceived",
+      "@type" : "http://www.w3.org/2001/XMLSchema#int"
+    },
+    "sdnl:begin" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#begin"
+    },
+    "sdnl:packetsLockedUp" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#packetsLockedUp",
+      "@type" : "http://www.w3.org/2001/XMLSchema#int"
+    },
+    "sdnl:groupAction" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#groupAction"
+    },
+    "sdnl:ControllerNode" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#ControllerNode"
+    },
+    "sdnl:VirtualNode" : {
+      "@id" : "http://www.science.uva.nl/research/sne/indl#VirtualNode"
+    },
+    "sdnl:hasSnapshot" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#hasSnapshot",
+      "@type" : "@id"
+    },
+    "sdnl:clearActions" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#clearActions"
+    },
+    "sdnl:TopologyManager" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#TopologyManager"
+    },
+    "sdnl:ovsdbNode" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#ovsdbNode"
+    },
+    "sdnl:lispNode" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#lispNode"
+    },
+    "sdnl:currentSpeed" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#currentSpeed",
+      "@type" : "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "sdnl:hasInterface" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#hasInterface",
+      "@type" : "@id"
+    },
+    "sdnl:hasNetworkStats" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#hasNetworkStats",
+      "@type" : "@id"
+    },
+    "sdnl:bgpNode" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#bgpNode"
+    },
+    "sdnl:Action" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#Action"
+    },
+    "sdnl:openflowNode" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#openflowNode"
+    },
+    "sdnl:State" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#State"
+    },
+    "sdnl:NodeObject" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#NodeObject"
+    },
+    "sdnl:maximumSpeed" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#maximumSpeed",
+      "@type" : "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "sdnl:netconfNode" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#netconfNode"
+    },
+    "sdnl:writeActions" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#writeActions"
+    },
+    "sdnl:hasService" : {
+      "@id" : "http://schemas.ogf.org/nml/2013/05/base#hasService",
+      "@type" : "@id"
+    },
+    "sdnl:outputAction" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#outputAction"
+    },
+    "sdnl:packetCount" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#packetCount",
+      "@type" : "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "sdnl:comment" : {
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#comment"
+    },
+    "sdnl:Meter" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#Meter"
+    },
+    "sdnl:packetsTransmitted" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#packetsTransmitted",
+      "@type" : "http://www.w3.org/2001/XMLSchema#int"
+    },
+    "sdnl:dropsTransmitted" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#dropsTransmitted",
+      "@type" : "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "sdnl:FlowTableStats" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#FlowTableStats"
+    },
+    "sdnl:linkDown" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#linkDown",
+      "@type" : "http://www.w3.org/2001/XMLSchema#boolean"
+    },
+    "sdnl:HostNode" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#HostNode"
+    },
+    "sdnl:isTableOf" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#isTableOf",
+      "@type" : "@id"
+    },
+    "sdnl:providesInstruction" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#providesInstruction",
+      "@type" : "@id"
+    },
+    "sdnl:Instruction" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#Instruction"
+    },
+    "sdnl:providesStats" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#providesStats",
+      "@type" : "@id"
+    },
+    "sdnl:macMatch" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#macMatch"
+    },
+    "sdnl:isNetworkStatOf" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#isNetworkStatOf",
+      "@type" : "@id"
+    },
+    "sdnl:isPartOfNode" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#isPartOfNode",
+      "@type" : "@id"
+    },
+    "sdnl:gotoTable" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#gotoTable"
+    },
+    "sdnl:protocolVersion" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#protocolVersion",
+      "@type" : "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "sdnl:bytesReceived" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#bytesReceived",
+      "@type" : "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "sdnl:GroupTable" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#GroupTable"
+    },
+    "sdnl:NetworkObject" : {
+      "@id" : "http://schemas.ogf.org/nml/2013/05/base#NetworkObject"
+    },
+    "sdnl:vlanMatch" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#vlanMatch"
+    },
+    "sdnl:hasVirtualNode" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#hasVirtualNode",
+      "@type" : "@id"
+    },
+    "sdnl:snmpNode" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#snmpNode"
+    },
+    "sdnl:writeMetadata" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#writeMetadata"
+    },
+    "sdnl:applyActions" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#applyActions"
+    },
+    "sdnl:hasMatch" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#hasMatch",
+      "@type" : "@id"
+    },
+    "sdnl:isInstructionOf" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#isInstructionOf",
+      "@type" : "@id"
+    },
+    "sdnl:errorsReceived" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#errorsReceived",
+      "@type" : "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "sdnl:Match" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#Match"
+    },
+    "sdnl:isSnapshotOf" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#isSnapshotOf",
+      "@type" : "@id"
+    },
+    "sdnl:Interface" : {
+      "@id" : "http://cinegrid.uvalight.nl/owl/ndl-topology.owl#Interface"
+    },
+    "sdnl:isInterfaceOf" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#isInterfaceOf",
+      "@type" : "@id"
+    },
+    "sdnl:ethernetMatch" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#ethernetMatch"
+    },
+    "sdnl:hasInstruction" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#hasInstruction",
+      "@type" : "@id"
+    },
+    "sdnl:providesTopology" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#providesTopology",
+      "@type" : "@id"
+    },
+    "sdnl:isStateOf" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#isStateOf",
+      "@type" : "@id"
+    },
+    "sdnl:NetworkStats" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#NetworkStats"
+    },
+    "sdnl:Service" : {
+      "@id" : "http://schemas.ogf.org/nml/2013/05/base#Service"
+    },
+    "sdnl:NodeState" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#NodeState"
+    },
+    "sdnl:hasAction" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#hasAction",
+      "@type" : "@id"
+    },
+    "sdnl:hasState" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#hasState",
+      "@type" : "@id"
+    },
+    "sdnl:isControlledBy" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#isControlledBy",
+      "@type" : "@id"
+    },
+    "sdnl:hasFlow" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#hasFlow",
+      "@type" : "@id"
+    },
+    "sdnl:hasTopology" : {
+      "@id" : "http://schemas.ogf.org/nml/2013/05/base#hasTopology",
+      "@type" : "@id"
+    },
+    "sdnl:hasGroupTable" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#hasGroupTable",
+      "@type" : "@id"
+    },
+    "sdnl:hasTable" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#hasTable",
+      "@type" : "@id"
+    },
+    "sdnl:Snapshot" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#Snapshot"
+    },
+    "sdnl:ethernetType" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#ethernetType"
+    },
+    "sdnl:setState" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#setState",
+      "@type" : "@id"
+    },
+    "sdnl:InterfaceState" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#InterfaceState"
+    },
+    "sdnl:InterfaceStats" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#InterfaceStats"
+    },
+    "sdnl:Node" : {
+      "@id" : "http://schemas.ogf.org/nml/base/2013/02#Node"
+    },
+    "sdnl:iddleTimeout" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#iddleTimeout",
+      "@type" : "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "sdnl:isActionOf" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#isActionOf",
+      "@type" : "@id"
+    },
+    "sdnl:LoadBalancerService" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#LoadBalancerService"
+    },
+    "sdnl:FlowStats" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#FlowStats"
+    },
+    "sdnl:dropAction" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#dropAction"
+    },
+    "sdnl:name" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#name",
+      "@type" : "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "sdnl:packetsMatched" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#packetsMatched",
+      "@type" : "http://www.w3.org/2001/XMLSchema#int"
+    },
+    "sdnl:providesMatch" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#providesMatch",
+      "@type" : "@id"
+    },
+    "sdnl:isMatchOf" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#isMatchOf",
+      "@type" : "@id"
+    },
+    "sdnl:FlowObject" : {
+      "@id" : "http://www.semanticweb.org/mgarcia/ontologies/2017/9/sdnl#FlowObject"
+    }
+  }
+}
