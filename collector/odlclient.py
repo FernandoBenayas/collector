@@ -2,6 +2,11 @@ import requests
 import logging
 import json
 
+"""
+ODL class
+
+__author__ = "GSI"
+"""
 
 class ODLClient(object):
     def __init__(self, endpoint, credentials=('admin', 'admin')):

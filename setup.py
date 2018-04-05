@@ -3,6 +3,12 @@ from setuptools import setup
 # parse_requirements() returns generator of pip.req.InstallRequirement objects
 from pip.req import parse_requirements
 
+"""
+Python script to set up collector
+
+__author__ = "GSI"
+"""
+
 try:
     install_reqs = parse_requirements(
         "requirements.txt", session=pip.download.PipSession())

@@ -2,6 +2,8 @@
 """
 SDN collector for Opendaylight API Rest
 
+__author__= "GSI"
+
 """
 
 import os

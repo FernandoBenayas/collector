@@ -7,6 +7,11 @@ import time
 import requests
 import json
 
+"""
+Collector class
+
+__author__ = "GSI"
+"""
 
 class esCollector(Elasticsearch):
     def __init__(self, hosts, countidfile='/tmp/countid', odl_endpoint='http://localhost:8181', countid = 0):

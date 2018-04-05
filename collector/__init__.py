@@ -2,6 +2,8 @@
 
 """
 Collector module for sdn diagnostic module
+
+__author__ = "GSI"
 """
 
 import logging
