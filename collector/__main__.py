@@ -81,6 +81,7 @@ def pause(pidfile, countidfile):
         try:
             os.kill(int(pid), signal.SIGTERM)
         except:
+            logging.info("Error at pausing %s", sys.exc_info()[0])
             pass
         logging.info("collector paused")
         sys.exit()
@@ -98,6 +99,7 @@ def stop(pidfile, countidfile):
         try:
             os.kill(int(pid), signal.SIGTERM)
         except:
+            logging.info("Error at stopping %s", sys.exc_info()[0])
             pass
         logging.info("collector stopped")
         sys.exit()

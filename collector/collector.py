@@ -67,6 +67,7 @@ class esCollector(Elasticsearch):
             
             with open(self.countidfile, 'w+') as f:
                 f.write(str(self.count_id))
+
             logging.info("countid: %s", str(self.count_id))
 
             switches.append(esdata)
