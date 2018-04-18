@@ -1,6 +1,40 @@
 #!/usr/bin/python
+
+# -*- coding: utf-8 -*-
+#~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+#
+# Copyright (c) 2018  Manuel García-Amado  <militarpancho@gmail.com>
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the GNU Public License v2.0
+# which accompanies this distribution, and is available at
+# http://www.gnu.org/licenses/old-licenses/gpl-2.0.html.
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+#~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+#title           : __main__.py
+#date created    : 22/01/2018
+#python_version  : 3.5.1
+#notes           :
+__author__ = "Manuel García-Amado"
+__license__ = "GPLv2"
+__version__ = "0.1.0"
+__maintainer__ = "Manuel García-Amado"
+__email__ = "militarpancho@gmail.com"
+
+"""This program can change the license header inside files.
+"""
+#~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+
 """
 SDN collector for Opendaylight API Rest
+
 
 """
 
@@ -21,11 +55,12 @@ ODL_HOST = os.environ.get('ODL_HOST', 'localhost')
 ES_PORT = "9200"
 ODL_PORT = "8181"
 PID_FILE = 'collector.pid'
+COUNTID_FILE = 'countid'
 
-
-def start(simulation_id, timesleep, pidfile=None):
+def start(simulation_id, timesleep, countidfile, pidfile=None):
     collector = esCollector(
         hosts='{}:{}'.format(ELASTICSEARCH, ES_PORT),
+        countidfile = countidfile,
         odl_endpoint='http://{}:{}'.format(ODL_HOST, ODL_PORT))
     #if not collector.validate_index(simulation_id):
     #   logging.info("This simulation already exists")
@@ -38,12 +73,41 @@ def start(simulation_id, timesleep, pidfile=None):
         with open(pidfile, 'w+') as f:
             f.write(pid)
         logging.info("Collector started")
+
+    return collector
+
+def play(simulation_id, timesleep, countidfile, pidfile=None):
+    if countidfile:
+        if not os.path.isfile(countidfile):
+            logging.info('Collector module was not stopped')
+            sys.exit()
+        else:
+            with open(countidfile, 'r') as f:
+                countid = f.read()
+    if pidfile:
+        if os.path.isfile(pidfile):
+            logging.info('Collector module was already running')
+            sys.exit()
+        else:
+            pid = str(os.getpid())
+            with open(pidfile, 'w+') as f:
+                f.write(pid)
+            logging.info('Collector unpaused')
+
+    collector = esCollector(
+        hosts='{}:{}'.format(ELASTICSEARCH, ES_PORT),
+        countidfile=countidfile,
+        odl_endpoint='http://{}:{}'.format(ODL_HOST, ODL_PORT),
+        countid=int(countid))
+
+    return collector
+
+def collect(collector, simulation_id, timesleep, logging):
     while True:
-        collector.add_data(simulation_id,timesleep=timesleep)
-        time.sleep(timesleep/3)
+        collector.add_data(simulation_id, timesleep, logging)
+        time.sleep(timesleep)
 
-
-def stop(pidfile):
+def pause(pidfile, countidfile):
     if os.path.isfile(pidfile):
         with open(pidfile, 'r') as f:
             pid = f.read()
@@ -51,6 +115,25 @@ def stop(pidfile):
         try:
             os.kill(int(pid), signal.SIGTERM)
         except:
+            logging.info("Error at pausing %s", sys.exc_info()[0])
+            pass
+        logging.info("collector paused")
+        sys.exit()
+    else:
+        logging.info("Collector module is not running")
+        sys.exit()
+
+def stop(pidfile, countidfile):
+    if os.path.isfile(pidfile):
+        with open(pidfile, 'r') as f:
+            pid = f.read()
+        os.remove(pidfile)
+        if os.path.isfile(countidfile):
+            os.remove(countidfile)
+        try:
+            os.kill(int(pid), signal.SIGTERM)
+        except:
+            logging.info("Error at stopping %s", sys.exc_info()[0])
             pass
         logging.info("collector stopped")
         sys.exit()
@@ -58,11 +141,11 @@ def stop(pidfile):
         logging.info("Collector module is not running")
         sys.exit()
 
-def wait(sim_id, sleep_time):
-    time.sleep(int(2*sleep_time))
+def wait(sim_id, sleep_time, countidfile):
+    time.sleep(int(sleep_time))
     logging.info("Waiting for Opendaylight response")
     try:
-        start(simulation_id=sim_id, timesleep=sleep_time)
+        start(simulation_id=sim_id, timesleep=sleep_time, countidfile=countidfile)
         logging.info("Collector restarted")
     except Exception as err:
         logging.info(str(err))
@@ -74,8 +157,8 @@ def Main():
     parser.add_argument(
         'cmd',
         type=str,
-        help='Start or stop Collector module',
-        choices=['start', 'stop'])
+        help='Start, stop, pause or play Collector module',
+        choices=['start', 'stop', 'play', 'pause'])
     parser.add_argument(
         '--time',
         '-t',
@@ -108,18 +191,36 @@ def Main():
     logging.getLogger('').addHandler(console)
 
     pidfile = "/tmp/{}".format(PID_FILE)
+    countidfile = '/tmp/{}'.format(COUNTID_FILE)
 
     if args.cmd == 'start':
         try:
-            start(args.simulation_id, args.time, pidfile)
+            collector = start(args.simulation_id, args.time, countidfile, pidfile)
+            collect(collector, args.simulation_id, args.time, logging)
         except KeyboardInterrupt:
             stop(pidfile)
+        except TypeError as err:
+            logging.info("Type Error: %s", err)
+            wait(args.simulation_id, args.time, countidfile)
         except:
-            logging.info("No Response from ODL")
-            wait(args.simulation_id, args.time)
+            logging.info("No Response from ODL: %s", sys.exc_info()[0])
+            wait(args.simulation_id, args.time, countidfile)
     elif args.cmd == 'stop':
-        stop(pidfile)
-
+        stop(pidfile, countidfile)
+    elif args.cmd == 'pause':
+        pause(pidfile, countidfile)
+    elif args.cmd == 'play':
+        try:
+            collector = play(args.simulation_id, args.time, countidfile,  pidfile)
+            collect(collector, args.simulation_id, args.time, logging)
+        except KeyboardInterrupt:
+            stop(pidfile)
+        except TypeError as err:
+            logging.info("Type Error: %s", err)
+            wait(args.simulation_id, args.time, countidfile)
+        except:
+            logging.info("No Response from ODL: %s", sys.exc_info()[0])
+            wait(args.simulation_id, args.time, countidfile)
 
 if __name__ == '__main__':
     Main()
