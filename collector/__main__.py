@@ -202,6 +202,9 @@ def Main():
         except TypeError as err:
             logging.info("Type Error: %s", err)
             wait(args.simulation_id, args.time, countidfile)
+        except ValueError as err:
+            logging.info("Value Error: %s", err)
+            wait(args.simulation_id, args.time, countidfile)
         except:
             logging.info("No Response from ODL: %s", sys.exc_info()[0])
             wait(args.simulation_id, args.time, countidfile)
@@ -217,6 +220,9 @@ def Main():
             stop(pidfile)
         except TypeError as err:
             logging.info("Type Error: %s", err)
+            wait(args.simulation_id, args.time, countidfile)
+        except ValueError as err:
+            logging.info("Value Error: %s", err)
             wait(args.simulation_id, args.time, countidfile)
         except:
             logging.info("No Response from ODL: %s", sys.exc_info()[0])
